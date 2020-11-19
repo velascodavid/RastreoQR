@@ -2,6 +2,7 @@ package com.example.rastreoqr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegistroUsuarioActivity extends AppCompatActivity {
 
@@ -30,6 +44,14 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
     String noCelular = "";
     String fechaNacimiento = "";
     String genero = "";
+    int mes;
+
+
+    RequestQueue rq;
+    JsonRequest jrq;
+
+    ProgressDialog progreso;
+    StringRequest stringRequest;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -50,20 +72,159 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
         spGenero.setAdapter(adapter2);
         Intent intent = getIntent();
         noCelular = intent.getStringExtra("celular");
+
+        rq = Volley.newRequestQueue(getApplicationContext());
     }
 
     public void registrarse(View view){
+
+        final String gen;
+
+        //Año-mes-día
         if(validacion()) {
-            fechaNacimiento = etDia.getText().toString() + "/" + spMeses.getSelectedItem().toString() + "/" + etAnio.getText().toString();
-            genero = spGenero.getSelectedItem().toString();
-            SharedPreferences preferences = getSharedPreferences("data", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("celular", noCelular);
-            editor.putString("fechaNacimiento", fechaNacimiento);
-            editor.putString("genero", genero);
-            editor.commit();
-            Intent intent = new Intent(RegistroUsuarioActivity.this, MainActivity.class);
-            startActivity(intent);
+
+            if(spGenero.getSelectedItem().toString() == "Masculino"){
+                gen ="M";
+            }else{
+                gen = "F";
+            }
+
+            switch(spMeses.getSelectedItem().toString()){
+                case "Enero":
+                {
+                    mes=1;
+                    break;
+                }
+                case "Febrero":
+                {
+                    mes=2;
+                    break;
+                }
+                case "Marzo":
+                {
+                    mes=3;
+                    break;
+                }
+                case "Abril":
+                {
+                    mes=4;
+                    break;
+                }
+                case "Mayo":
+                {
+                    mes=5;
+                    break;
+                }
+                case "Junio":
+                {
+                    mes=6;
+                    break;
+                }
+                case "Julio":
+                {
+                    mes=7;
+                    break;
+                }
+                case "Agosto":
+                {
+                    mes=8;
+                    break;
+                }
+                case "Septiembre":
+                {
+                    mes=9;
+                    break;
+                }
+                case "Octubre":
+                {
+                    mes=10;
+                    break;
+                }
+                case "Noviembre":
+                {
+                    mes=11;
+                    break;
+                }
+                case "Diciembre":
+                {
+                    mes=12;
+                    break;
+                }
+            }
+
+
+
+            progreso=new ProgressDialog(RegistroUsuarioActivity.this);
+            progreso.setMessage("Cargando...");
+            progreso.setCancelable(false);
+            progreso.show();
+
+            String url = "http://davidvelasco.com.mx/AppCovid/RegistraUsuario.php?";
+
+            stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    progreso.hide();
+
+                    if (response.trim().equalsIgnoreCase("registra")) {
+                        SharedPreferences preferences = getSharedPreferences("data", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("celular", noCelular);
+                        editor.putString("fechaNacimiento", fechaNacimiento);
+                        editor.putString("genero", genero);
+                        editor.commit();
+                        Intent intent = new Intent(RegistroUsuarioActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(RegistroUsuarioActivity.this, "¡Registrado con éxito!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(RegistroUsuarioActivity.this, "Ocurrió un error. Verifica tus datos e inténtalo de nuevo.", Toast.LENGTH_LONG).show();
+                        btRegistrarse.setEnabled(true);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progreso.hide();
+
+                    btRegistrarse.setEnabled(true);
+
+                    Toast.makeText(RegistroUsuarioActivity.this, "Hubo un error al conectarse al servidor. Revisa tu conexión e inténtalo de nuevo", Toast.LENGTH_LONG).show();
+
+                    /*Snackbar snackbar = Snackbar.make(btGuardar, "Hubo un error al conectarse al servidor. Revisa tu conexión e inténtalo de nuevo", Snackbar.LENGTH_LONG);
+                    snackbar.show();*/
+
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+
+                    fechaNacimiento = etAnio.getText().toString() + "/" + mes + "/" + etDia.getText().toString();
+
+                    System.out.println("fechaNac:" + fechaNacimiento);
+
+                    String FechaNac = fechaNacimiento;
+                    String Cel = noCelular;
+
+                    Map<String, String> parametros = new HashMap<>();
+
+                    parametros.put("FechaNacimiento", fechaNacimiento);
+                    parametros.put("Celular", Cel);
+                    parametros.put("Genero", gen);
+
+                    return parametros;
+
+                }
+            };
+
+            rq.add(stringRequest);
+
+
+
+
+            //fechaNacimiento = etDia.getText().toString() + "/" + spMeses.getSelectedItem().toString() + "/" + etAnio.getText().toString();
+
+            //genero = spGenero.getSelectedItem().toString();
+
         }
     }
 
