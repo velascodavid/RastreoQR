@@ -184,6 +184,7 @@ public class EscanearActivity extends AppCompatActivity{
                         Toast.makeText(EscanearActivity.this, "Registro correcto", Toast.LENGTH_LONG).show();
                         finish();
                     } else {
+                        Toast.makeText(EscanearActivity.this, "La empresa no se encuentra activa.", Toast.LENGTH_LONG).show();
                         btGuardar.setEnabled(true);
                     }
                 }
@@ -228,8 +229,8 @@ public class EscanearActivity extends AppCompatActivity{
 
         btGuardar.setEnabled(false);
         guardarBitacora();
-        etNombre.setText(empresa);
-        etFecha.setText(fechahora);
+        //etNombre.setText(empresa);
+        //etFecha.setText(fechahora);
         String x="ZAPOTLÁN EL GRANDE  ITCG-Conciencia-COVID\n"+"Estás visitando a la empresa: "+empresa+"\n"+" BIENVENIDO, programa de rastreo COVID \n"+"Se registra el celular: "+341+" GRACIAS POR ATENDER el programa de rastreo COVID";
         Toast toast4=Toast.makeText(this, x,Toast.LENGTH_SHORT);
         //toast4.show();
