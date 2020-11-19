@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">RastreoQR</string>
+    <string name="text_welcome">¡BIENVENIDO!</string>
+    <string name="text_info">Aplicación creada por alumnos del Instituto Tecnológico de Ciudad Guzmán.</string>
+    <string name="text_button">Iniciar</string>
+    <string name="text_celular">Ingresa tu número de celular</string>
+    <string name="text_telefono">Número de celular</string>
+    <string name="text_registrar">Registrarse</string>
+    <string name="text_info_celular">Proporciona tu celular y se te enviará un código de verificación para continuar con el registro.</string>
+    <string name="text_verificar">Verificar</string>
+    <string name="text_registro">Completa tu registro.</string>
+    <string name="text_leyenda_registro">Ingresa la información de tu fecha de nacimiento y género.</string>
+    <string name="hint_dia">Dia</string>
+    <string name="hint_anio">Año</string>
+    <string name="text_fecha_nacimiento">Fecha de nacimiento</string>
+    <string name="text_numero_celular">Número de celular</string>
+    <string name="text_genero">Género</string>
+</resources>
