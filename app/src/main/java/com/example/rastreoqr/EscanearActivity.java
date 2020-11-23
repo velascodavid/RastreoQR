@@ -179,7 +179,6 @@ public class EscanearActivity extends AppCompatActivity{
                 @Override
                 public void onResponse(String response) {
                     progreso.hide();
-
                     if (response.trim().equalsIgnoreCase("registra")) {
                         Toast.makeText(EscanearActivity.this, "Registro correcto", Toast.LENGTH_LONG).show();
                         finish();

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RastreoQR</string>
+    <string name="app_name">Track-COVID</string>
     <string name="text_welcome">¡BIENVENIDO!</string>
     <string name="text_info">Aplicación creada por alumnos del Instituto Tecnológico de Ciudad Guzmán.</string>
     <string name="text_button">Iniciar</string>

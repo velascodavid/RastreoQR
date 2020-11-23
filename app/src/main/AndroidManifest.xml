@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RegistroUsuarioActivity"></activity>
+        <activity android:name=".ReportarActivity"></activity>
+        <activity android:name=".RegistroUsuarioActivity" />
         <activity android:name=".CelularActivity" />
         <activity android:name=".EscanearActivity" />
         <activity android:name=".MainActivity">

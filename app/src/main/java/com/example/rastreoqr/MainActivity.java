@@ -34,7 +34,7 @@ import static android.Manifest.permission.CAMERA;
 
 public class MainActivity extends AppCompatActivity {
 
-    CardView cvQR;
+    CardView cvQR, cvReportar;
 
     private Window window;
     private Button btIniciar;
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         window.setNavigationBarColor(Color.argb(255,165,39,63));
 
         cvQR = (CardView)findViewById(R.id.cvQR);
+        cvReportar = (CardView)findViewById(R.id.cvReportar);
 
         if(!celular.isEmpty()){
             tvBienvenido.setText("Bienvenido");
@@ -75,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, EscanearActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
+
+        cvReportar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ReportarActivity.class);
+                startActivity(intent);
             }
         });
 
